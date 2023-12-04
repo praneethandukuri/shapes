@@ -1,5 +1,5 @@
 const { assertArrayEqual } = require("./assertArraysEqual.js");
-const { getFilledRectangleShape, getHollowRectangleShape, getAlternatingRectangleShape, getFilledTriangleShape, getHollowTriangleShape, getAlternatingTriangleShape } = require("./shapes.js");
+const { getFilledRectangleShape, getHollowRectangleShape, getAlternatingRectangleShape, getFilledTriangleShape, getHollowTriangleShape, getAlternatingTriangleShape, getInterlacedRectangle, getInterlacedTriangle } = require("./shapes.js");
 
 const rectangleTests = function () {
   assertArrayEqual(getFilledRectangleShape(1, 1), ["*"], "it should return a filled rectangle with 1x1");
@@ -13,6 +13,8 @@ const rectangleTests = function () {
   assertArrayEqual(getAlternatingRectangleShape(2, 5), ["-----", "+++++"], "it should return a alternating rectangle with 2x3");
   assertArrayEqual(getAlternatingRectangleShape(1, 5), ["-----"], "it should return a alternating rectangle with 1x5");
   assertArrayEqual(getAlternatingRectangleShape(5, 1), ["-", "+", "-", "+", "-"], "it should return a alternating rectangle with 5x1");
+
+  assertArrayEqual(getInterlacedRectangle(3, 9), ["+-+-+-+-+", "-+-+-+-+-", "+-+-+-+-+"], "it should return a interlaced rectangle with 3x9");
 }
 
 const triangleTests = function () {
@@ -27,6 +29,8 @@ const triangleTests = function () {
   assertArrayEqual(getAlternatingTriangleShape(2), ["-", "++"], "it should return a alternating triangle with the height of 2");
   assertArrayEqual(getAlternatingTriangleShape(3), ["-", "++", "---"], "it should return a alternating triangle with the height of 3");
   assertArrayEqual(getAlternatingTriangleShape(6), ["-", "++", "---", "++++", "-----", "++++++"], "it should return a alternating triangle with the height of 6");
+
+  assertArrayEqual(getInterlacedTriangle(6), ["+", "-+", "+-+", "-+-+", "+-+-+", "-+-+-+"], "it should return a interlaced triangle with the height of 6");
 }
 
 const runTests = function () {

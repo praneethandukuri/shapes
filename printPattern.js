@@ -85,11 +85,11 @@ const main = function (args) {
   if (args.length > 0) {
     assignUserArgs(args, patterned2Dshape)
   }
+  const dimensions = patterned2Dshape.dimensions.split(",");
+  const rows = +dimensions[0]
+  const columns = +dimensions[1]
 
-  const rows = +patterned2Dshape.dimensions[0]
-  const columns = +patterned2Dshape.dimensions[2]
-
-  const result = get2DPatternShape(patterned2Dshape.shape, patterned2Dshape.pattern, rows, columns);
+  const result = get2DPatternShape(patterned2Dshape.shape, patterned2Dshape.pattern, rows, columns);//(rectangle,interlaced,3,9)
   console.log(result.join("\n"));
 }
 main(process.argv.slice(2));
