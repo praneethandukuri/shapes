@@ -83,25 +83,6 @@ const getFilledTriangleShape = function (rows) {
   return trianglePattern;
 }
 
-// ===================== hollow triangle =======================
-// const getHollowTriangleShape = function (height) {
-//   const hollowTriangleShape = [];
-
-//   const isCurrentIndexSymbol = function (currentRow, currentColumn, height) {
-//     const isLastRow = currentRow === height - 1;
-//     const firstOrLastColumn = currentColumn === 0 || currentColumn === currentRow;
-//     return isLastRow || firstOrLastColumn ? "*" : " ";
-//   }
-
-//   for (let currentRow = 0; currentRow < height; currentRow++) {
-//     let row = "";
-//     for (let currentColumn = 0; currentColumn <= currentRow; currentColumn++) {
-//       row += isCurrentIndexSymbol(currentRow, currentColumn, height);
-//     }
-//     hollowTriangleShape.push(row);
-//   }
-//   return hollowTriangleShape;
-// }
 const getHollowTriangleShape = function (height) {
   if (height <= 2) {
     return getFilledTriangleShape(height)
