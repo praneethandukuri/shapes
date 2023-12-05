@@ -1,0 +1,9 @@
+1.Diamond Hollow..
+ 1. to take input rows from printPattern.js file
+ 2.to write a function to get hollow diamond shape
+ 3.to check the middle of rows
+ 4.to loop over every row
+ 5.if it 1st or last row to push the same
+ 6.else check how many spaces needed before,between and after the stars
+ 7.to check spaces should we need in between we should do (total rows-2 * one side spaces)-2 
+ 8.create an array to store every line into elements

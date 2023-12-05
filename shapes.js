@@ -125,6 +125,7 @@ const getInterlacedTriangle = function (height) {
 // ===============>>>>>>>>>>>> DIAMOND <<<<<<<<<<=========================
 // ============== filled diamond ===================
 const getFilledDiamondShape = function (rows) {
+
   const filledDiamond = [];
   // Upper part of the diamond
   for (let i = 0; i < Math.ceil(rows / 2); i++) {
@@ -141,12 +142,21 @@ const getFilledDiamondShape = function (rows) {
   }
   return filledDiamond;
 }
-// console.log(getFilledDiamondShape(5).join("\n"))
 
 const getHollowDiamondShape = function (rows) {
+  const midddleOfRows = Math.ceil(rows / 2);
   const hollowDiamond = [];
-
+  for (let currentRow = 1; currentRow <= rows; currentRow++) {
+    const spaces = Math.abs(midddleOfRows - currentRow);
+    if (currentRow === 1 || currentRow === rows) {
+      hollowDiamond.push(' '.repeat(spaces) + '*'.repeat(1));
+    } else {
+      hollowDiamond.push(' '.repeat(spaces) + '*' + ' '.repeat((rows - 2 * spaces) - 2) + '*');
+    }
+  }
+  return hollowDiamond;
 }
+
 
 const getInterlacedDiamond = function (rows) {
   const interlacedDiamond = [];
@@ -168,7 +178,7 @@ const getInterlacedDiamond = function (rows) {
 }
 
 // =============== code exporting =============================
-module.exports = { getFilledRectangleShape, getHollowRectangleShape, getAlternatingRectangleShape, getInterlacedRectangle, getFilledTriangleShape, getHollowTriangleShape, getAlternatingTriangleShape, getInterlacedTriangle, getFilledDiamondShape, getHollowDiamondShape }
+module.exports = { getFilledRectangleShape, getHollowRectangleShape, getAlternatingRectangleShape, getInterlacedRectangle, getFilledTriangleShape, getHollowTriangleShape, getAlternatingTriangleShape, getInterlacedTriangle, getFilledDiamondShape, getHollowDiamondShape, getInterlacedDiamond }
 
 
 

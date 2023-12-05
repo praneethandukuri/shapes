@@ -1,4 +1,4 @@
-const { getFilledRectangleShape, getHollowRectangleShape, getAlternatingRectangleShape, getInterlacedRectangle, getFilledTriangleShape, getHollowTriangleShape, getAlternatingTriangleShape, getInterlacedTriangle, getFilledDiamondShape, getHollowDiamondShape } = require("./shapes.js");
+const { getFilledRectangleShape, getHollowRectangleShape, getAlternatingRectangleShape, getInterlacedRectangle, getFilledTriangleShape, getHollowTriangleShape, getAlternatingTriangleShape, getInterlacedTriangle, getFilledDiamondShape, getHollowDiamondShape, getInterlacedDiamond } = require("./shapes.js");
 
 const get2DPatternShape = function (shape, pattern, rows, columns) {
   let result = [];
@@ -33,21 +33,23 @@ const get2DPatternShape = function (shape, pattern, rows, columns) {
         case 'interlaced':
           result = getInterlacedTriangle(rows);
           break;
-        case 'diamond':
-          switch (pattern) {
-            case 'filled':
-              result = getFilledDiamondShape(rows);
-              break;
-            case 'hollow':
-              result = getHollowDiamondShape(rows);
-              break;
-            case 'alternating':
-              result = getAlternatingTriangleShape(rows);
-              break;
-            case 'interlaced':
-              result = getInterlacedTriangle(rows);
-          }
       }
+      break;
+    case 'diamond':
+      switch (pattern) {
+        case 'filled':
+          result = getFilledDiamondShape(rows);
+          break;
+        case 'hollow':
+          result = getHollowDiamondShape(rows);
+          break;
+        case 'alternating':
+          result = getAlternatingTriangleShape(rows);
+          break;
+        case 'interlaced':
+          result = getInterlacedTriangle(rows);
+      }
+
       break;
     default:
       result = [];
@@ -89,7 +91,7 @@ const main = function (args) {
   const rows = +dimensions[0]
   const columns = +dimensions[1]
 
-  const result = get2DPatternShape(patterned2Dshape.shape, patterned2Dshape.pattern, rows, columns);//(rectangle,interlaced,3,9)
+  const result = get2DPatternShape(patterned2Dshape.shape, patterned2Dshape.pattern, rows, columns);
   console.log(result.join("\n"));
 }
 main(process.argv.slice(2));
