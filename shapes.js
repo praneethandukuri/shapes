@@ -1,184 +1,212 @@
-// ================= is symbol? ======================
-const isSymbol = function (currentRow) {
-  return currentRow % 2 === 0 ? "+" : "-";
-}
-// ====================>>>>>>> RECTANGLE <<<<<<<<============================
+const STAR = "*";
+const SPACE = " ";
+const HYPHEN = "-";
 
-// ===============filled rectangle =================
-const getFilledRectangleShape = function (rows, columns) {
-  const filledRectangleShape = [];
+// ------------> FILLED RECTANGLE <--------------
+
+function createFilledRectangle(rows, columns) {
+  const filledRectangle = [];
 
   for (let currentRow = 0; currentRow < rows; currentRow++) {
-    filledRectangleShape.push("*".repeat(columns));
+    filledRectangle.push(STAR.repeat(columns));
   }
-  return filledRectangleShape;
+
+  return filledRectangle.join("\n");
 }
 
-// ============== hollow rectangle =======================
-const getHollowRectangleShape = function (rows, columns) {
-  const hollowRectangleShape = [];
+// -----------> HOLLOW RECTANGLE <------------
 
-  const isCurrentIndexSymbol = function (currentRow, currentColumn, rows, columns) {
-    const topAndLastRow = currentRow === 0 || currentRow === rows - 1;
-    const rightAndLeftColumn = currentColumn === 0 || currentColumn === columns - 1;
-    return topAndLastRow || rightAndLeftColumn ? "*" : " ";
-  }
+function getCharacer(currentRow, currentColumn, rows, columns) {
+  const topAndLastRow = currentRow === 0 || currentRow === rows - 1;
+  const rightAndLeftColumn = currentColumn === 0 || currentColumn === columns -
+    1;
+
+  return topAndLastRow || rightAndLeftColumn ? STAR : SPACE;
+}
+
+function createHollowRectangle(rows, columns) {
+  const hollowRectangleShape = [];
 
   for (let currentRow = 0; currentRow < rows; currentRow++) {
     let row = "";
+
     for (let currentColumn = 0; currentColumn < columns; currentColumn++) {
-      row += isCurrentIndexSymbol(currentRow, currentColumn, rows, columns);
+      row += getCharacer(currentRow, currentColumn, rows, columns);
     }
+
     hollowRectangleShape.push(row);
   }
-  return hollowRectangleShape;
+
+  return hollowRectangleShape.join("\n");
 }
 
-// =================== alternating rectangle ====================
-const getAlternatingRectangleShape = function (rows, columns) {//(3,9)
-  const alternatingRectangleShape = [];
+// --------------> ALTERNATING RECTANGLE <--------------
+
+function getSymbol(currentRow) {
+  return currentRow % 2 === 0 ? STAR : HYPHEN;
+}
+
+function createAlternatingRectangle(rows, columns) {
+  const alternatingRectangle = [];
+
+  for (let currentRow = 0; currentRow < rows; currentRow++) {
+    alternatingRectangle.push(getSymbol(currentRow).repeat(columns));
+  }
+
+  return alternatingRectangle.join("\n");
+}
+
+// -----------> SPACED-ALTERNATING RECTANGLE <-----------
+
+function createSpacedAlternatingRectangle(rows, columns) {
+  const spacedAlternatingRectangle = [];
+  const characters = [STAR, HYPHEN, SPACE];
+
+  for (let currentRow = 0; currentRow < rows; currentRow++) {
+    const char = characters[currentRow % 3];
+    spacedAlternatingRectangle.push(char.repeat(columns));
+  }
+
+  return spacedAlternatingRectangle.join("\n");
+}
+
+// -----------> triangle <-------------
+
+function createFilledTriangle(rows) {
+  const filledTriangle = [];
 
   for (let currentRow = 1; currentRow <= rows; currentRow++) {
-    const symbol = isSymbol(currentRow);
-    alternatingRectangleShape.push(symbol.repeat(columns))
+    filledTriangle.push(STAR.repeat(currentRow));
   }
 
-  return alternatingRectangleShape;
+  return filledTriangle.join("\n");
 }
 
-// ================= interlaced rectangle =================
-const isEven = function (num) {
-  return num % 2 === 0
-}
+// ----------> right aligned triangle <----------
 
-const getInterlacedRow = function (columns, firstSymbol, secondSymbol) {
-  let row = ""
-  for (let currentColumn = 1; currentColumn <= columns; currentColumn++) {
-    row += (isEven(currentColumn) ? firstSymbol : secondSymbol)
-  }
-  return row
-}
-
-const getInterlacedRectangle = function (rows, columns) {
-  const interlacedRectangle = [];
+function createRightAlignedTriangle(rows) {
+  const rightAlignedTriangle = [];
 
   for (let currentRow = 1; currentRow <= rows; currentRow++) {
-    let [firstSymbol, secondSymbol] = isEven(currentRow) ? ["+", "-"] : ["-", "+"];
-    const row = getInterlacedRow(columns, firstSymbol, secondSymbol)
-    interlacedRectangle.push(row);
+    const spaces = rows - currentRow;
+    rightAlignedTriangle.push(SPACE.repeat(spaces) + STAR.repeat(rows -
+      spaces));
   }
-  return interlacedRectangle;
+
+  return rightAlignedTriangle.join("\n");
 }
 
-// ================>>>>>>>>>>> TRIANGLE <<<<<<<<<<===========================
+function getRectangleShape(style, dimensions) {
+  const [rows, columns] = [dimensions[1], dimensions[0]];
 
-// ==================== filled triangle ===================== 
-
-const getFilledTriangleShape = function (rows) {
-  const trianglePattern = [];
-  let symbol = "*";
-  for (let currentRow = 1; currentRow <= rows; currentRow++) {
-    trianglePattern.push(symbol.repeat(currentRow));
+  switch (style) {
+    case "filled-rectangle":
+      return createFilledRectangle(rows, columns);
+    case "hollow-rectangle":
+      return createHollowRectangle(rows, columns);
+    case "alternating-rectangle":
+      return createAlternatingRectangle(rows, columns);
+    case "triangle":
+      return createFilledTriangle(columns);
+    case "right-aligned-triangle":
+      return createRightAlignedTriangle(columns);
+    case "spaced-alternating-rectangle":
+      return createSpacedAlternatingRectangle(rows, columns);
   }
-  return trianglePattern;
 }
 
-const getHollowTriangleShape = function (height) {
-  if (height <= 2) {
-    return getFilledTriangleShape(height)
+function generatePattern(style, dimensions) {
+  const shapePattern = getRectangleShape(style, dimensions);
+
+  if (dimensions[0] === 0 || dimensions[1] === 0) {
+    return "";
   }
 
-  const hollowTriangleShape = ["*"]
-
-  for (let currentRow = 2; currentRow < height; currentRow++) {
-    hollowTriangleShape.push("*" + " ".repeat(currentRow - 2) + "*")
-  }
-
-  hollowTriangleShape.push("*".repeat(height))
-
-  return hollowTriangleShape;
+  return shapePattern;
 }
 
+//  ------------> TESTING <-----------
 
-// ================== alternating triangle ====================
-const getAlternatingTriangleShape = function (height) {
-  const alternatingTriangleShape = [];
-  for (let currentRow = 1; currentRow <= height; currentRow++) {
-    const symbol = isSymbol(currentRow);
-    alternatingTriangleShape.push(symbol.repeat(currentRow))
+function testGeneratePattern(style, dimensions, expected, failed) {
+  const actual = generatePattern(style, dimensions);
+  if (actual !== expected) {
+    failed.push([style, dimensions, actual, expected]);
   }
-  return alternatingTriangleShape;
 }
 
-// =================interlaced triangle ======================
-
-const getInterlacedTriangle = function (height) {
-  const interlacedTriangle = [];
-  for (let currentRow = 1; currentRow <= height; currentRow++) {
-    let [firstSymbol, secondSymbol] = isEven(currentRow) ? ["+", "-"] : ["-", "+"];
-    const row = getInterlacedRow(currentRow, firstSymbol, secondSymbol)
-    interlacedTriangle.push(row);
-  }
-  return interlacedTriangle;
+function testFilledRectangle(failed) {
+  testGeneratePattern('filled-rectangle', [0, 0], "", failed);
+  testGeneratePattern('filled-rectangle', [1, 0], "", failed);
+  testGeneratePattern('filled-rectangle', [0, 1], "", failed);
+  testGeneratePattern('filled-rectangle', [1, 1], "*", failed);
+  testGeneratePattern('filled-rectangle', [4, 4], "****\n****\n****\n****", failed);
+  testGeneratePattern('filled-rectangle', [8, 4],
+    "********\n********\n********\n********", failed);
 }
 
-// ===============>>>>>>>>>>>> DIAMOND <<<<<<<<<<=========================
-// ============== filled diamond ===================
-const getFilledDiamondShape = function (rows) {
-
-  const filledDiamond = [];
-  // Upper part of the diamond
-  for (let i = 0; i < Math.ceil(rows / 2); i++) {
-    let spaces = " ".repeat(Math.floor(rows / 2) - i);
-    let stars = "*".repeat(2 * i + 1);
-    filledDiamond.push(spaces + stars);
-  }
-
-  // Lower part of the diamond
-  for (let i = Math.floor(rows / 2) - 1; i >= 0; i--) {
-    let spaces = " ".repeat(Math.floor(rows / 2) - i);
-    let stars = "*".repeat(2 * i + 1);
-    filledDiamond.push(spaces + stars);
-  }
-  return filledDiamond;
+function testHollowRectangle(failed) {
+  testGeneratePattern("hollow-rectangle", [4, 3], "****\n*  *\n****", failed);
+  testGeneratePattern("hollow-rectangle", [5, 4], "*****\n*   *\n*   *\n*****",
+    failed);
+  testGeneratePattern("hollow-rectangle", [6, 2], "******\n******", failed);
+  testGeneratePattern("hollow-rectangle", [5, 1], "*****", failed);
+  testGeneratePattern("hollow-rectangle", [1, 5], "*\n*\n*\n*\n*", failed);
+  testGeneratePattern("hollow-rectangle", [0, 3], "", failed);
+  testGeneratePattern("hollow-rectangle", [7, 0], "", failed);
 }
 
-const getHollowDiamondShape = function (rows) {
-  const midddleOfRows = Math.ceil(rows / 2);
-  const hollowDiamond = [];
-  for (let currentRow = 1; currentRow <= rows; currentRow++) {
-    const spaces = Math.abs(midddleOfRows - currentRow);
-    if (currentRow === 1 || currentRow === rows) {
-      hollowDiamond.push(' '.repeat(spaces) + '*'.repeat(1));
-    } else {
-      hollowDiamond.push(' '.repeat(spaces) + '*' + ' '.repeat((rows - 2 * spaces) - 2) + '*');
-    }
-  }
-  return hollowDiamond;
+function testAlternatingRectangle(failed) {
+  testGeneratePattern("alternating-rectangle", [3, 3], "***\n---\n***", failed);
+  testGeneratePattern("alternating-rectangle", [5, 4],
+    "*****\n-----\n*****\n-----", failed);
+  testGeneratePattern("alternating-rectangle", [6, 2], "******\n------",
+    failed);
+  testGeneratePattern("alternating-rectangle", [4, 1], "****", failed);
+  testGeneratePattern("alternating-rectangle", [0, 5], "", failed);
+  testGeneratePattern("alternating-rectangle", [7, 0], "", failed);
 }
 
-
-const getInterlacedDiamond = function (rows) {
-  const interlacedDiamond = [];
-  // Upper part of the diamond
-  for (let currentRow = 1; currentRow < Math.ceil(rows / 2); currentRow++) {
-    let spaces = " ".repeat(Math.floor(rows / 2) - currentRow);
-    let [firstSymbol, secondSymbol] = isEven(currentRow) ? ["+", "-"] : ["-", "+"];
-    const row = getInterlacedRow(currentRow, firstSymbol, secondSymbol)
-    interlacedDiamond.push(spaces + row);
-  }
-
-  // Lower part of the diamond
-  for (let i = Math.floor(rows / 2) - 1; i >= 0; i--) {
-    let spaces = " ".repeat(Math.floor(rows / 2) - i);
-    let stars = "*".repeat(2 * i + 1);
-    interlacedDiamond.push(spaces + stars);
-  }
-  return interlacedDiamond;
+function testFilledTriangle(failed) {
+  testGeneratePattern("triangle", [3], "*\n**\n***", failed);
+  testGeneratePattern("triangle", [5], "*\n**\n***\n****\n*****", failed);
+  testGeneratePattern("triangle", [1], "*", failed);
+  testGeneratePattern("triangle", [0], "", failed);
 }
 
-// =============== code exporting =============================
-module.exports = { getFilledRectangleShape, getHollowRectangleShape, getAlternatingRectangleShape, getInterlacedRectangle, getFilledTriangleShape, getHollowTriangleShape, getAlternatingTriangleShape, getInterlacedTriangle, getFilledDiamondShape, getHollowDiamondShape, getInterlacedDiamond }
+function testRightAlignedTriangle(failed) {
+  testGeneratePattern("right-aligned-triangle", [3], "  *\n **\n***", failed);
+  testGeneratePattern("right-aligned-triangle", [5],
+    "    *\n   **\n  ***\n ****\n*****", failed);
+  testGeneratePattern("right-aligned-triangle", [1], "*", failed);
+  testGeneratePattern("right-aligned-triangle", [0], "", failed);
+}
 
+function testSpacedAlternatingRectangle(failed) {
+  testGeneratePattern("spaced-alternating-rectangle", [3, 4],
+    "***\n---\n   \n***", failed);
+  testGeneratePattern("spaced-alternating-rectangle", [5, 6],
+    "*****\n-----\n     \n*****\n-----\n     ", failed);
+  testGeneratePattern("spaced-alternating-rectangle", [4, 3],
+    "****\n----\n    ", failed);
+  testGeneratePattern("spaced-alternating-rectangle", [6, 2],
+    "******\n------", failed);
+  testGeneratePattern("spaced-alternating-rectangle", [0, 3],
+    "", failed);
+  testGeneratePattern("spaced-alternating-rectangle", [7, 0],
+    "", failed);
+}
 
+function testAll() {
+  const failed = [];
 
+  testFilledRectangle(failed);
+  testHollowRectangle(failed);
+  testAlternatingRectangle(failed);
+  testFilledTriangle(failed);
+  testRightAlignedTriangle(failed);
+  testSpacedAlternatingRectangle(failed);
+
+  console.table(failed);
+}
+
+testAll();
